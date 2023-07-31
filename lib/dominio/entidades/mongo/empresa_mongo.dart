@@ -1,24 +1,17 @@
 import 'package:manhatan/dominio/entidades/locales/empresa.dart';
 import 'package:manhatan/dominio/entidades/mongo/generico_mongo.dart';
-
-
-
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'dart:convert';
 
 class EmpresaMongo extends GenericoMongo {
-     
-    @override
-    String coleccion = "Empresa"; // nombre de la coleccion en mongo
-    
+         
     late mongo.ObjectId id;
     late String nombre;
     late String correo;
 
     EmpresaMongo.Empresa(Empresa empresa)
     {
-        this.id = mongo.ObjectId();      
-        
+        this.id = mongo.ObjectId();              
         this.correo = empresa.correo;
         this.nombre = empresa.nombre;      
     }
@@ -33,7 +26,7 @@ class EmpresaMongo extends GenericoMongo {
 
     EmpresaMongo.json(mongo.ObjectId id, String nombre, String correo)
     {
-      id = id;      
+      this.id = id;      
       this.correo = correo;
       this.nombre = nombre;
     }
@@ -52,10 +45,15 @@ class EmpresaMongo extends GenericoMongo {
       return data;
     }
 
+    Empresa entidadBase()
+    {
+        Empresa nuevo = Empresa(nombre, correo, id.$oid);
+        return nuevo;
+    }
 
       @override
       Map<String, dynamic> objetoABson() => {
-       "_id": id.toJson(),
+       "_id": id,
         "nombre": nombre,
         "correo": correo,
       };

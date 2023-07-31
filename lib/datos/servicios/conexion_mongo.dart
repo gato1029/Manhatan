@@ -20,7 +20,7 @@ class ConexionMongo extends ConexionDB
   }
   
 
-  Future<String> insertar(GenericoMongo mongoData) async {    
+  Future<String> insertar(String coleccion, GenericoMongo mongoData) async {    
     //verifica siempre si la conexion esta vigente, si no vuelve a realizar una conexion
     if(!db.isConnected)
     {
@@ -28,7 +28,7 @@ class ConexionMongo extends ConexionDB
     }
 
     try {      
-        var dbColeccion = db.collection(mongoData.coleccion);     
+        var dbColeccion = db.collection(coleccion);     
           var resultado = await dbColeccion.insertOne(mongoData.objetoABson());         
         if (resultado.isSuccess)
         {      
@@ -42,4 +42,46 @@ class ConexionMongo extends ConexionDB
       return e.toString();
     }  
   }
+
+  Future<dynamic> buscarConsulta(String coleccion,dynamic consulta)  async
+  {            
+      if(!db.isConnected)
+      {
+        await conectar();
+      }
+      try {      
+          var dbColeccion = db.collection(coleccion);     
+          var resultado = await dbColeccion.find(consulta);         
+          if (resultado == null)
+          {
+            print("Error: Documento no encontrado");
+            return null;
+          }                
+          return resultado;
+      } catch (e) {
+        print("Error: Buscar Uno "+e.toString()); // cambiarlo por interrupciones widgets
+          return null;
+      }  
+  }
+
+  Future<dynamic> buscarUno(String coleccion,String codigo)  async
+  {            
+      if(!db.isConnected)
+      {
+        await conectar();
+      }
+      try {      
+          var dbColeccion = db.collection(coleccion);     
+          var resultado = await dbColeccion.findOne(where.eq('_id', ObjectId.fromHexString(codigo)));         
+          if (resultado == null)
+          {
+            print("Error: Documento no encontrado");
+            return null;
+          }                
+          return resultado;
+      } catch (e) {
+        print("Error: Buscar Uno "+e.toString()); // cambiarlo por interrupciones widgets
+          return null;
+      }  
+  }                        
 }
