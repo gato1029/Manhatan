@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:manhatan/datos/servicios/conexion_mongo.dart';
 import 'package:manhatan/dominio/entidades/mongo/empresa_mongo.dart';
 import 'package:manhatan/dominio/repositorios/repositorio_empresa.dart';
-import 'package:mongo_dart/mongo_dart.dart';
+
 import '../../../dominio/entidades/locales/empresa.dart';
 import '../../servicios/conexion_db.dart';
 
