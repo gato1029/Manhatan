@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:manhatan/utils/registrador_dependencias.dart';
+import 'package:manhatan/datos/servicios/conexion_db.dart';
+import 'package:manhatan/dominio/repositorios/repositorio_empresa.dart';
+import 'dominio/entidades/locales/empresa.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+
+  RegistradorDependencias();
+  await GetIt.instance.get<ConexionDB>().conectar(); // realiza la primera conexion y la creacion del objeto  esto debe ir en login como primera instruccion   
+
+  var entidadEmpresa = GetIt.instance.get<RepositorioEmpresa>();
+
+  Empresa d = Empresa("EmpresaRefinada","gato");    
+  await entidadEmpresa.insertar(d);
+ 
+  print(d.codigo);
+ // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
